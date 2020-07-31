@@ -24,6 +24,9 @@ app = Flask(__name__)
 @app.route("/event/<subtype>", methods=["PUT", "POST"])
 def hello_world(subtype):
     event = request.get_json()
+    for key in event:
+        if (str(key)).endswith("Date"):
+            event[key] = datetime.datetime.fromtimestamp(int(event[key]) / 1000).strftime(time_format)
     if format is None:
         msg = ""
         first = True
@@ -33,10 +36,7 @@ def hello_world(subtype):
             first = False
             msg += key
             msg += ": "
-            val = event[key]
-            if(str(key)).endswith("Date"):
-                val = datetime.datetime.fromtimestamp(int(val)/1000).strftime(time_format)
-            msg += str(val)
+            msg += str(event[key])
         sender.send_message(msg)
     else:
         sender.send_message(format.format_map(event))
