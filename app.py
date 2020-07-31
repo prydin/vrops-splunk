@@ -33,10 +33,10 @@ def hello_world(subtype):
             first = False
             msg += key
             msg += ": "
+            val = event[key]
             if(str(key)).endswith("Date"):
-                msg += datetime.datetime.fromtimestamp(int(event[key])/1000).strftime(time_format)
-            else:
-                msg += str(event[key])
+                val = datetime.datetime.fromtimestamp(int(val)/1000).strftime(time_format)
+            msg += str(val)
         sender.send_message(msg)
     else:
         sender.send_message(format.format_map(event))
