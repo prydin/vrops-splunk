@@ -21,8 +21,13 @@ sender = Sender(url, token)
 
 app = Flask(__name__)
 
+@app.route("/event/test", methods=["PUT", "POST"])
+def test_event():
+    return 'OK'
+
+
 @app.route("/event/<subtype>", methods=["PUT", "POST"])
-def hello_world(subtype):
+def receive_event(subtype):
     event = request.get_json()
     for key in event:
         if (str(key)).endswith("Date"):
